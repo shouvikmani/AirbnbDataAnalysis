@@ -5,7 +5,6 @@ import time
 
 class AirbnbClient:
 	def __init__(self):
-
 		CLIENT_ID = "3092nxybyb0otqw18e8nh5nty"
 		self.REQUEST_INTERVAL = .1
 		self.DEBUG = True
@@ -25,7 +24,6 @@ class AirbnbClient:
 			offset += self.MAX_LIMIT
 
 		listings = map(lambda l: l["listing"]["id"], listings)
-		print "Got %d total listings in %s" % (len(listings), location)
 
 		return listings
 
@@ -46,8 +44,6 @@ class AirbnbClient:
 		
 		if self.DEBUG:
 			print "Made request to %s" % resp.url
-
-
 		return results["search_results"]
 
 	def cleanse_str(self, s):
@@ -55,7 +51,7 @@ class AirbnbClient:
 		s = s.replace('\n', ' ').replace('\r', '').replace(',','')
 		return s.encode('utf-8')
 
-	def parse_listings(self, listings, params_filename="params.csv", output_filename="airbnb-results.csv"):
+	def parse_listings(self, listings, params_filename="params.txt", output_filename="airbnb-results.csv"):
 		
 		with open(params_filename, 'r') as f:
 			params = f.readlines()
@@ -92,7 +88,6 @@ if __name__ == "__main__":
 
 	ac = AirbnbClient()
 	listings = ac.scrape(sys.argv[1], int(sys.argv[2]))
-	print sys.argv
 	if len(sys.argv) == 4:
 		ac.parse_listings(listings, sys.argv[3])
 	else:	
