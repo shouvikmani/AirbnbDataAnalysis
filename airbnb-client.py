@@ -51,6 +51,7 @@ class AirbnbClient:
 		s = s.replace('\n', ' ').replace('\r', '').replace(',','')
 		return s.encode('utf-8')
 
+
 	def parse_listings(self, listings, params_filename="params.txt", output_filename="airbnb-results.csv"):
 		
 		with open(params_filename, 'r') as f:
@@ -65,10 +66,20 @@ class AirbnbClient:
 
 		for i,lid in enumerate(listings):
 			url = self.listing_url % lid
+			if self.DEBUG:
+				print "Made request to %s" % url
 			resp = requests.get(url)
-			l = resp.json()["listing"]
+			resp_json = resp.json()
 			vals = []
 			for key in params:
+				l = resp_json["listing"]
+				if key.startswith("host_"):
+					key = key.replace("host_", "")
+					l = l["hosts"]
+					if len(l) == 0:
+						continue
+					l = l[0]
+					
 				if type(l[key]) is unicode:
 					s = self.cleanse_str(l[key])					
 					vals.append(s)
