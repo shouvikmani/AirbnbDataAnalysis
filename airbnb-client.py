@@ -117,14 +117,12 @@ class AirbnbClient:
 
 
 if __name__ == "__main__":
-	print sys.argv
 	if len(sys.argv) < 3:
 		print >> sys.stderr, "%s: usage: <locations seperated by ':'> <num_results>" % sys.argv[0]
 		sys.exit(1)
 
 	ac = AirbnbClient()
 	locations = sys.argv[1].split(":")
-
 	# Scrape API Search Results for all locations
 	listings = ac.scrape(locations, int(sys.argv[2]))
 
